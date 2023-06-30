@@ -1,0 +1,547 @@
+openapi: 3.0.3
+info:
+  title: API Dieta Diária
+  termsOfService: http://swagger.io/terms/
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+tags:
+  - name: user
+    description: About User.
+  - name: meal
+    description: About Meal.
+paths:
+  /user:
+    post:
+      tags:
+        - user
+      summary: Created user
+      description: Allows to create new user
+      operationId: createUser
+      requestBody:
+        description: Object of new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCretedUser'
+                
+        '400':
+          description: 'Schema Invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSchemaInvalid'
+                
+        '409':
+          description: 'User already exist !'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUserAlreadyExist'
+  /user/login:
+    post:
+      tags:
+        - user
+      summary: login user
+      description: ""
+      operationId: loginUser
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginUser'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseLoginUser'
+        '400':
+          description: 'Schema Invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSchemaInvalid'
+                
+        '404':
+          description: 'User already exist !'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseUserNotFound'
+  /meal/create:
+    post:
+      tags:
+        - meal
+      summary: Created new Meal
+      description: Protected endpoint that requires token authentication JWT
+      security:
+        - BearerAuth: []
+      operationId: createMeal
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mealNewCreate'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseCretedMeal'
+        '400':
+          description: 'Schema Invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSchemaInvalid'
+                
+        '419':
+          description: 'Session Expired'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSessionExpired'
+  /meal/alter:
+    put:
+      tags:
+        - meal
+      summary: Update an existing meal
+      description: Protected endpoint that requires token authentication JWT
+      security:
+        - BearerAuth: []
+      operationId: updateMeal
+      requestBody:
+        description: Update an existing meal
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/mealAlterExistent'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseAlterMeal'
+        '400':
+          description: 'Schema Invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSchemaInvalid'
+                
+        '419':
+          description: 'Session Expired'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSessionExpired'
+  /meal/delete/{id}:
+    delete:
+      tags:
+        - meal
+      summary: Delete meal
+      description: Protected endpoint that requires token authentication JWT
+      security:
+        - BearerAuth: []
+      operationId: deleteMeal
+      parameters:
+        - name: id
+          in: path
+          description: The id of meal for delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully
+        '401':
+          description: Unauthorized
+          
+  /meal/{id}:
+    get:
+      tags:
+        - meal
+      summary: Get meal
+      description: Protected endpoint that requires token authentication JWT
+      security:
+        - BearerAuth: []
+      operationId: getMeal
+      parameters:
+        - name: id
+          in: path
+          description: The id of meal for delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetMeal'
+        '400':
+          description: Invalid format ID.
+          
+        '419':
+          description: 'Session Expired'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSessionExpired'
+          
+  /meal/metric/{id}:
+    get:
+      tags:
+        - meal
+      summary: Get metric of meal
+      description: Protected endpoint that requires token authentication JWT
+      operationId: getMetricMeal
+      parameters:
+        - name: id
+          in: path
+          description: The id of user for get metrics
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: 4d060c46-147e-11ee-be56-0242ac120002
+      responses:
+        '200':
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetMealMetric'
+        '400':
+          description: 'Schema Invalid'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSchemaInvalid'
+                
+        '419':
+          description: 'Session Expired'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSessionExpired'
+components:
+  schemas:
+    User:
+      required:
+        - username
+        - email
+      type: object
+      properties:
+        username:
+          type: string
+          example: user
+        email:
+          type: string
+          example: test@test.com
+    loginUser:
+      required:
+        - id
+        - email
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 4d060c46-147e-11ee-be56-0242ac120002
+        email:
+          type: string
+          example: test@test.com
+    mealNewCreate:
+      required:
+        - name
+        - description
+        - ondiet
+        - meal_at
+      type: object
+      properties:
+        name:
+          type: string
+          example: Salad
+        description:
+          type: string
+          example: lettuce
+        ondiet:
+          type: boolean
+          example: True
+        meal_at:
+          type: string
+          example: 2021-09-08T11:52:07Z
+    mealAlterExistent:
+      required:
+        - id
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          format: uuid
+          example: Salad
+        description:
+          type: string
+          example: lettuce
+        ondiet:
+          type: boolean
+          example: True
+        meal_at:
+          type: string
+          example: 2021-09-08T11:52:07Z
+    ResponseLoginUser:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 200
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+                format: jwt-token
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImIyZGYzNDQxLTU4YTEtNDc2OS04ZTUwLTFkMjA4YTk5OTViYiIsImVtYWlsIjoidXNlcnRlc3QyMjVAZ21haWwuY29tIiwiaWF0IjoxNjg3ODIzOTQ4LCJleHAiOjE2ODc4Mjc1NDh9.FzegY-4zkol4O4S0twq_CLlJiAgZmV3Sg_hEmT5TC6w
+    ResponseUserNotFound:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 404
+        message:
+          type: string
+          example: 'User not found !'
+    ResponseSessionExpired:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 419
+        message:
+          type: string
+          example: 'Session expired. please sign in again'
+    ResponseSchemaInvalid:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 400
+        message:
+          type: string
+          example: 'Invalid format'
+    ResponseCretedUser:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 201
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                example: 4444afd3-04d5-426f-bd99-29c66f9edfb9
+              username:
+                type: string
+                example: user
+              email:
+                type: string
+                example: test@test.com
+              created_at:
+                type: string
+                format: datetime
+                example: 2023-06-26 22:29:11
+    ResponseCretedMeal:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 201
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              id_user:
+                type: string
+                format: uuid
+                example: 4d060c46-147e-11ee-be56-0242ac120002
+              name:
+                type: string
+                example: Salad
+              created_at:
+                type: string
+                format: datetime
+                example: 2023-06-26 22:29:11
+              meal_at:
+                type: string
+                format: datetime
+                example: "2021-09-08T11:52:07Z"
+              ondiet:
+                type: boolean
+                example: 1
+    ResponseGetMeal:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 200
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              id_user:
+                type: string
+                format: uuid
+                example: 4d060c46-147e-11ee-be56-0242ac120002
+              name:
+                type: string
+                example: Salad
+              created_at:
+                type: string
+                format: datetime
+                example: 2023-06-26 22:29:11
+              meal_at:
+                type: string
+                format: datetime
+                example: "2021-09-08T11:52:07Z"
+              ondiet:
+                type: boolean
+                example: 1
+    ResponseAlterMeal:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 200
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              id_user:
+                type: string
+                format: uuid
+                example: 4d060c46-147e-11ee-be56-0242ac120002
+              name:
+                type: string
+                example: Salad
+              created_at:
+                type: string
+                format: datetime
+                example: 2023-06-26 22:29:11
+              meal_at:
+                type: string
+                format: datetime
+                example: "2021-09-08T11:52:07Z"
+              ondiet:
+                type: boolean
+                example: 1
+    ResponseUserAlreadyExist:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 409
+        message:
+          type: string
+          example: 'User already exist !'
+    ResponseGetMealMetric:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int64
+          example: 200
+        data:
+          type: object
+          properties:
+            totalmeals:
+              type: integer
+              example: 1
+            totalmealsondiet:
+              type: integer
+              example: 1
+            totalmealsoffdiet:
+              type: integer
+              example: 0
+            bestsequenceOndiet:
+              type: string
+              example: Salad
+    ApiResponse:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+          format: int32
+        type:
+          type: string
+        data:
+          type: string
+  requestBodies:
+    UserArray:
+      description: List of user object
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/User'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
