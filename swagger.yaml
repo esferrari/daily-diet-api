@@ -214,17 +214,9 @@ paths:
       tags:
         - meal
       summary: Get list of meals about user logged
-      description: Protected endpoint that requires token authentication JWT
       security:
         - BearerAuth: []
-      operationId: getMeal
-      parameters:
-        - name: id
-          in: path
-          description: The id of user for list meals
-          required: true
-          schema:
-            type: integer
+      description: The id of user for list meals
       responses:
         '200':
           description: User created
@@ -561,7 +553,7 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/User
+              $ref: '#/components/schemas/User'
   securitySchemes:
     BearerAuth:
       type: http

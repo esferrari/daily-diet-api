@@ -31,14 +31,12 @@ describe('User routes', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         statusCode: 201,
-        data: [
-          {
-            id: expect.any(String),
-            name: 'User',
-            email: 'user@gmail.com',
-            created_at: expect.any(String),
-          },
-        ],
+        data: {
+          id: expect.any(String),
+          name: 'User',
+          email: 'user@gmail.com',
+          created_at: expect.any(String),
+        },
       }),
     )
   })
