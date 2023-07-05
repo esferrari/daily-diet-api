@@ -189,7 +189,39 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The id of meal for delete
+          description: The id of meal of user logged
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseGetMeal'
+        '400':
+          description: Invalid format ID.
+          
+        '419':
+          description: 'Session Expired'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseSessionExpired'
+  /meal/list:
+    get:
+      tags:
+        - meal
+      summary: Get list of meals about user logged
+      description: Protected endpoint that requires token authentication JWT
+      security:
+        - BearerAuth: []
+      operationId: getMeal
+      parameters:
+        - name: id
+          in: path
+          description: The id of user for list meals
           required: true
           schema:
             type: integer
@@ -368,24 +400,22 @@ components:
           format: int64
           example: 201
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                example: 4444afd3-04d5-426f-bd99-29c66f9edfb9
-              username:
-                type: string
-                example: user
-              email:
-                type: string
-                example: test@test.com
-              created_at:
-                type: string
-                format: datetime
-                example: 2023-06-26 22:29:11
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              example: 4444afd3-04d5-426f-bd99-29c66f9edfb9
+            username:
+              type: string
+              example: user
+            email:
+              type: string
+              example: test@test.com
+            created_at:
+              type: string
+              format: datetime
+              example: 2023-06-26 22:29:11
     ResponseCretedMeal:
       type: object
       properties:
@@ -394,31 +424,29 @@ components:
           format: int64
           example: 201
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                example: 1
-              id_user:
-                type: string
-                format: uuid
-                example: 4d060c46-147e-11ee-be56-0242ac120002
-              name:
-                type: string
-                example: Salad
-              created_at:
-                type: string
-                format: datetime
-                example: 2023-06-26 22:29:11
-              meal_at:
-                type: string
-                format: datetime
-                example: "2021-09-08T11:52:07Z"
-              ondiet:
-                type: boolean
-                example: 1
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            id_user:
+              type: string
+              format: uuid
+              example: 4d060c46-147e-11ee-be56-0242ac120002
+            name:
+              type: string
+              example: Salad
+            created_at:
+              type: string
+              format: datetime
+              example: 2023-06-26 22:29:11
+            meal_at:
+              type: string
+              format: datetime
+              example: "2021-09-08T11:52:07Z"
+            ondiet:
+              type: boolean
+              example: 1
     ResponseGetMeal:
       type: object
       properties:
@@ -460,31 +488,29 @@ components:
           format: int64
           example: 200
         data:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                example: 1
-              id_user:
-                type: string
-                format: uuid
-                example: 4d060c46-147e-11ee-be56-0242ac120002
-              name:
-                type: string
-                example: Salad
-              created_at:
-                type: string
-                format: datetime
-                example: 2023-06-26 22:29:11
-              meal_at:
-                type: string
-                format: datetime
-                example: "2021-09-08T11:52:07Z"
-              ondiet:
-                type: boolean
-                example: 1
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            id_user:
+              type: string
+              format: uuid
+              example: 4d060c46-147e-11ee-be56-0242ac120002
+            name:
+              type: string
+              example: Salad
+            created_at:
+              type: string
+              format: datetime
+              example: 2023-06-26 22:29:11
+            meal_at:
+              type: string
+              format: datetime
+              example: "2021-09-08T11:52:07Z"
+            ondiet:
+              type: boolean
+              example: 1
     ResponseUserAlreadyExist:
       type: object
       properties:
@@ -535,7 +561,7 @@ components:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/User
   securitySchemes:
     BearerAuth:
       type: http

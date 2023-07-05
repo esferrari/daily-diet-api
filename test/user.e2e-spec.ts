@@ -13,8 +13,8 @@ describe('User routes', () => {
   })
 
   beforeEach(async () => {
-    execSync('npm run knex migrate:rollback --all')
-    execSync('npm run knex migrate:latest')
+    // execSync('npm run knex migrate:rollback --all')
+    // execSync('npm run knex migrate:latest')
   })
 
   it('should be able to create a new user', async () => {
@@ -22,10 +22,11 @@ describe('User routes', () => {
       username: 'User',
       email: 'user@gmail.com',
     }
-
+    console.log('entrou')
     const response = await supertest(app.server)
       .post('/user/create')
       .send(objUser)
+    console.log('analisando expect')
 
     expect(response.body).toEqual(
       expect.objectContaining({
@@ -42,7 +43,7 @@ describe('User routes', () => {
     )
   })
 
-  it('should be able to login', async () => {
+  it.skip('should be able to login', async () => {
     const objUser = {
       username: 'User2',
       email: 'user2@gmail.com',

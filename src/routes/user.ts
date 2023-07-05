@@ -1,9 +1,9 @@
 import { FastifyInstance } from 'fastify'
-import { knex } from '../database'
 import crypto from 'node:crypto'
 import { createUserSchema, loginUserSchema } from '../schemas/user'
 import { generateToken } from '../util/auth'
 import { fromZodError } from 'zod-validation-error'
+import prisma from '../prisma'
 
 export async function userRoutes(app: FastifyInstance) {
   app.post('/create', async (request, reply) => {
@@ -16,23 +16,26 @@ export async function userRoutes(app: FastifyInstance) {
       })
     } else {
       const { username, email } = _body.data
+      //   const userExist = await knex('user').select('id').where('email', email)
+      const userExist = await prisma.user.findFirst({
+        where: { email },
+      })
 
-      const userExist = await knex('user').select('id').where('email', email)
-
-      if (userExist.length > 0) {
+      if (userExist) {
         return reply.code(409).send({
           statusCode: 409,
           message: 'User already exist !',
         })
       }
 
-      const userCreated = await knex('user')
-        .insert({
+      const userCreated = await prisma.user.create({
+        data: {
           id: crypto.randomUUID(),
           username,
           email,
-        })
-        .returning('*')
+        },
+      })
+
       return reply.code(201).send({
         statusCode: 201,
         data: userCreated,
@@ -51,12 +54,11 @@ export async function userRoutes(app: FastifyInstance) {
     } else {
       const { id, email } = _body.data
 
-      const userExist = await knex('user')
-        .select('id')
-        .where('id', id)
-        .andWhere('email', email)
+      const userExist = await prisma.user.findFirst({
+        where: { email, id },
+      })
 
-      if (userExist.length === 0) {
+      if (!userExist) {
         reply.code(404).send({
           statusCode: 404,
           message: 'User not found !',

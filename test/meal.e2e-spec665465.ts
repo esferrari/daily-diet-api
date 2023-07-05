@@ -8,8 +8,8 @@ let idUser: string
 describe('Meal routes', () => {
   beforeAll(async () => {
     await app.ready()
-    execSync('npm run knex migrate:rollback --all')
-    execSync('npm run knex migrate:latest')
+    // execSync('npm run knex migrate:rollback --all')
+    // execSync('npm run knex migrate:latest')
 
     const userCreated = await supertest(app.server).post('/user/create').send({
       username: 'User3',
@@ -28,7 +28,7 @@ describe('Meal routes', () => {
   })
 
   afterAll(async () => {
-    execSync('npm run knex migrate:rollback --all')
+    // execSync('npm run knex migrate:rollback --all')
     await app.close()
   })
 
