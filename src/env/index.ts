@@ -2,8 +2,10 @@ import { config } from 'dotenv'
 import { z } from 'zod'
 
 if (process.env.NODE_ENV === 'test') {
+  console.log('caiu aqui teste')
   config({ path: '.env.test' })
 } else {
+  console.log('caiu aqui')
   config()
 }
 
