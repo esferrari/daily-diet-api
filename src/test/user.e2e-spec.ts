@@ -17,11 +17,11 @@ describe('User routes', () => {
       username: 'User',
       email: 'user@gmail.com',
     }
-    console.log('entrou')
+
     const response = await supertest(app.server)
       .post('/user/create')
       .send(objUser)
-    console.log(response.body)
+
     expect(response.body).toEqual(
       expect.objectContaining({
         statusCode: 201,
