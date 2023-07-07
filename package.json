@@ -10,9 +10,6 @@
     "lint:fix": "eslint src test --ext .ts --fix",
     "test": "vitest",
     "build": "tsup src",
-    "test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
-    "test:install-prisma-environment": "npm link vitest-environment-prisma",
-    "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
     "test:e2e": "vitest run -c vitest.e2e.config.ts",
     "test:e2e:watch": "vitest -c vitest.e2e.config.ts",
     "test:coverage": "vitest run --coverage"
@@ -31,7 +28,7 @@
     "tsup": "^7.0.0",
     "tsx": "^3.12.7",
     "vite-tsconfig-paths": "^4.2.0",
-    "vitest": "^0.32.2"
+    "vitest": "^0.32.4"
   },
   "dependencies": {
     "@fastify/swagger": "^8.6.0",
@@ -40,7 +37,6 @@
     "dotenv": "^16.3.0",
     "fastify": "^4.18.0",
     "jsonwebtoken": "^9.0.0",
-    "knex": "^2.4.2",
     "prisma": "^4.16.2",
     "sqlite3": "^5.1.6",
     "typescript": "^5.1.3",

@@ -1,22 +1,19 @@
 import { it, expect, beforeAll, afterAll, describe } from 'vitest'
 import supertest from 'supertest'
-import { app } from '../src/app'
-import { execSync } from 'node:child_process'
+import { app } from '../app'
 
 let authToken: string
 let idUser: string
 describe('Meal routes', () => {
   beforeAll(async () => {
     await app.ready()
-    // execSync('npm run knex migrate:rollback --all')
-    // execSync('npm run knex migrate:latest')
 
     const userCreated = await supertest(app.server).post('/user/create').send({
       username: 'User3',
       email: 'user3@gmail.com',
     })
 
-    const { id, email } = userCreated.body.data[0]
+    const { id, email } = userCreated.body.data
 
     const response = await supertest(app.server).post('/user/login').send({
       id,
@@ -28,7 +25,6 @@ describe('Meal routes', () => {
   })
 
   afterAll(async () => {
-    // execSync('npm run knex migrate:rollback --all')
     await app.close()
   })
 
@@ -46,17 +42,15 @@ describe('Meal routes', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         statusCode: 201,
-        data: [
-          {
-            id: expect.any(Number),
-            id_user: expect.any(String),
-            name: 'Salad',
-            description: 'lettuce',
-            ondiet: 1,
-            meal_at: expect.any(String),
-            created_at: expect.any(String),
-          },
-        ],
+        data: {
+          id: expect.any(Number),
+          id_user: expect.any(String),
+          name: 'Salad',
+          description: 'lettuce',
+          ondiet: true,
+          meal_at: expect.any(String),
+          created_at: expect.any(String),
+        },
       }),
     )
   })
@@ -85,17 +79,15 @@ describe('Meal routes', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         statusCode: 200,
-        data: [
-          {
-            id: 1,
-            id_user: expect.any(String),
-            name: 'Alter name',
-            description: 'Alter description',
-            ondiet: 1,
-            meal_at: expect.any(String),
-            created_at: expect.any(String),
-          },
-        ],
+        data: {
+          id: 1,
+          id_user: expect.any(String),
+          name: 'Alter name',
+          description: 'Alter description',
+          ondiet: true,
+          meal_at: expect.any(String),
+          created_at: expect.any(String),
+        },
       }),
     )
   })
@@ -120,7 +112,7 @@ describe('Meal routes', () => {
     expect(response.body).toEqual(
       expect.objectContaining({
         statusCode: 200,
-        message: 'Successfully',
+        message: 'Deleted 1 records',
       }),
     )
   })

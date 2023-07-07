@@ -1,7 +1,7 @@
-import { it, expect, beforeAll, afterAll, describe, beforeEach } from 'vitest'
+import { it, expect, beforeAll, afterAll, describe } from 'vitest'
 import supertest from 'supertest'
-import { app } from '../src/app'
-import { execSync } from 'node:child_process'
+import { app } from '../app'
+import 'dotenv/config'
 
 describe('User routes', () => {
   beforeAll(async () => {
@@ -12,28 +12,22 @@ describe('User routes', () => {
     await app.close()
   })
 
-  beforeEach(async () => {
-    // execSync('npm run knex migrate:rollback --all')
-    // execSync('npm run knex migrate:latest')
-  })
-
   it('should be able to create a new user', async () => {
     const objUser = {
       username: 'User',
       email: 'user@gmail.com',
     }
-    console.log('entrou')
+
     const response = await supertest(app.server)
       .post('/user/create')
       .send(objUser)
-    console.log('analisando expect')
 
     expect(response.body).toEqual(
       expect.objectContaining({
         statusCode: 201,
         data: {
           id: expect.any(String),
-          name: 'User',
+          username: 'User',
           email: 'user@gmail.com',
           created_at: expect.any(String),
         },
@@ -41,7 +35,7 @@ describe('User routes', () => {
     )
   })
 
-  it.skip('should be able to login', async () => {
+  it('should be able to login', async () => {
     const objUser = {
       username: 'User2',
       email: 'user2@gmail.com',
@@ -51,7 +45,7 @@ describe('User routes', () => {
       .post('/user/create')
       .send(objUser)
 
-    const { id, email } = userCreated.body.data[0]
+    const { id, email } = userCreated.body.data
 
     const response = await supertest(app.server).post('/user/login').send({
       id,
