@@ -22,12 +22,9 @@ $ npm install
 
 # Variaveis de ambiente.
 # Necessário renomear o arquivo .env.example e preencher as variaveis de ambiente.
-<NODE_ENV=(development ou test ou production) - DATABASE_URL=(caminho para salvar o arquivo de banco de dados) - HASH=(String utilizada para assinar token JWT)>
-$ ren .env.example .env <No prompt de comando>
-
-# Executar as migrations.
-$ npm run knex migrate:latest <Executar migrations>
-$ npm run knex migrate:rollback --all <Desfazer todas migrations>
+<NODE_ENV=(development ou test ou production) -
+DATABASE_URL=(caminho para salvar o arquivo de banco de dados) -
+HASH=(String utilizada para assinar token JWT)>
 
 # Execute a aplicação em modo de desenvolvimento
 $ npm run dev
@@ -43,8 +40,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 - [NodeJS](https://nodejs.org/en)
 - [TypeScript](https://www.typescriptlang.org/)
-- [SQLite](https://www.sqlite.org/index.html)
+- [PostgreSQL](https://www.postgresql.org/)
 - [Fastify](https://www.fastify.io/)
 - [Zod](https://zod.dev/)
-- [Knex](https://knexjs.org/)
+- [Docker](https://www.docker.com/)
 - [Vitest](https://vitest.dev/)
