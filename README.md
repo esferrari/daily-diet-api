@@ -20,11 +20,8 @@ $ cd daily-diet-api
 # Instale as dependências.
 $ npm install
 
-# Variaveis de ambiente.
-# Necessário renomear o arquivo .env.example e preencher as variaveis de ambiente.
-<NODE_ENV=(development ou test ou production) -
-DATABASE_URL=(caminho para salvar o arquivo de banco de dados) -
-HASH=(String utilizada para assinar token JWT)>
+# Executar migrations
+$ npx prisma migrate dev
 
 # Execute a aplicação em modo de desenvolvimento
 $ npm run dev
