@@ -1,6 +1,6 @@
 # API Dieta Diária.
 
-### API para controle de uma dieta diária.
+### API para controle dieta diária.
 
 ### Pré-requisitos
 
