@@ -6,7 +6,7 @@ export default mergeConfig(
   defineConfig({
     test: {
       include: ['**/*.e2e-{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-      environmentMatchGlobs: [['prisma/**', 'prisma']],
+      environmentMatchGlobs: [['src/**', 'prisma']],
     },
   }),
 )

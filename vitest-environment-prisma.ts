@@ -24,10 +24,8 @@ export default <Environment>{
     const schema = randomUUID()
     const databaseURL = generateDatabaseURL(schema)
 
-    console.log(`aqui antes de tudo`)
     process.env.DATABASE_URL = databaseURL
     execSync('npx prisma migrate deploy')
-    console.log(' do teste antes')
 
     return {
       async teardown() {
@@ -35,7 +33,6 @@ export default <Environment>{
           `DROP SCHEMA IF EXISTS "${schema}" CASCADE`,
         )
         await prisma.$disconnect()
-        console.log('depoois do teste')
       },
     }
   },

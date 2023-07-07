@@ -1,13 +1,5 @@
-import { config } from 'dotenv'
+import 'dotenv/config'
 import { z } from 'zod'
-
-if (process.env.NODE_ENV === 'test') {
-  console.log('caiu aqui teste')
-  config({ path: '.env.test' })
-} else {
-  console.log('caiu aqui')
-  config()
-}
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('production'),
